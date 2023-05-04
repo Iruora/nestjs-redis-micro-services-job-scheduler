@@ -1,7 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { MessagePattern } from '@nestjs/microservices';
-import { PRODUCTS_EVENT } from 'apps/gateway/src/enums/products-event.enum';
 import { Product } from './schemas/product';
 
 @Controller()
@@ -14,8 +12,21 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get(':id')
+  async getProductDetails(@Param('id') id: string): Promise<Product> {
+    return this.productsService.getProductDetails(id);
+  }
+
   @Post()
   async createProduct(@Body() product): Promise<Product> {
     return this.productsService.createProduct(product);
+  }
+
+  @Patch(':id')
+  async updateProductQuantity(
+    @Param('id') id: string,
+    @Body() product: Pick<Product, 'quantity'>,
+  ): Promise<Product> {
+    return this.productsService.updateProductQuantity(id, product.quantity);
   }
 }

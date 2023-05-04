@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, lastValueFrom, map, tap } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
@@ -45,11 +53,32 @@ export class GatewayController {
     );
   }
 
+  @Get('products/:id')
+  async getProductDetails(@Param('id') id: string): Promise<Product> {
+    return lastValueFrom(
+      this.httpService
+        .get<Product>(`${process.env.PRODUCTS_MS_URL}/${id}`)
+        .pipe(map((response) => response.data)),
+    );
+  }
+
   @Post('products')
   async saveProduct(@Body() product: Product): Promise<Product> {
     return lastValueFrom(
       this.httpService
         .post<Product>(process.env.PRODUCTS_MS_URL, product)
+        .pipe(map((response) => response.data)),
+    );
+  }
+
+  @Patch('products/:id')
+  async updateProductQuantity(
+    @Body() product: Pick<Product, 'quantity'>,
+    @Param('id') id: string,
+  ): Promise<Product> {
+    return lastValueFrom(
+      this.httpService
+        .patch(`${process.env.PRODUCTS_MS_URL}/${id}`, product)
         .pipe(map((response) => response.data)),
     );
   }
