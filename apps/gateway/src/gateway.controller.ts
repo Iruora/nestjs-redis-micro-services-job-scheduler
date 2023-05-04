@@ -1,6 +1,8 @@
-import { Controller, Get, Inject } from '@nestjs/common';
-import { GatewayService } from './gateway.service';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { Observable, lastValueFrom, map, tap } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
+import { Product } from 'apps/products/src/schemas/product';
 
 @Controller()
 export class GatewayController {
@@ -10,6 +12,11 @@ export class GatewayController {
 
     @Inject('APP_2')
     private readonly microservice2: ClientProxy,
+
+    @Inject('PRODUCTS')
+    private readonly productsMicroservice: ClientProxy,
+
+    private readonly httpService: HttpService,
   ) {}
 
   @Get('microservice1')
@@ -21,10 +28,29 @@ export class GatewayController {
   }
 
   @Get('microservice2')
-  async callMicroservice2(): Promise<string> {
-    const result = await this.microservice2.emit('test_event', {
-      message: 'Hello from Gateway !',
-    });
-    return `Response from microservice2: ${JSON.stringify(result)}`;
+  callMicroservice2(): Observable<any> {
+    return this.microservice2
+      .send('test_event', {
+        message: 'Hello from Gateway !',
+      })
+      .pipe(tap(console.log));
+  }
+
+  @Get('products')
+  async getProducts(): Promise<Array<Product>> {
+    return lastValueFrom(
+      this.httpService
+        .get<Product[]>('http://localhost:3003')
+        .pipe(map((response) => response.data)),
+    );
+  }
+
+  @Post('products')
+  async saveProduct(@Body() product: Product): Promise<Product> {
+    return lastValueFrom(
+      this.httpService
+        .post<Product>('http://localhost:3003', product)
+        .pipe(map((response) => response.data)),
+    );
   }
 }
