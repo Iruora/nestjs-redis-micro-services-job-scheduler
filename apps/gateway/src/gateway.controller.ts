@@ -40,7 +40,7 @@ export class GatewayController {
   async getProducts(): Promise<Array<Product>> {
     return lastValueFrom(
       this.httpService
-        .get<Product[]>('http://localhost:3003')
+        .get<Product[]>(process.env.PRODUCTS_MS_URL)
         .pipe(map((response) => response.data)),
     );
   }
@@ -49,7 +49,7 @@ export class GatewayController {
   async saveProduct(@Body() product: Product): Promise<Product> {
     return lastValueFrom(
       this.httpService
-        .post<Product>('http://localhost:3003', product)
+        .post<Product>(process.env.PRODUCTS_MS_URL, product)
         .pipe(map((response) => response.data)),
     );
   }
