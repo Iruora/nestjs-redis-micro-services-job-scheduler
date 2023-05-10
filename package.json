@@ -15,6 +15,7 @@
     "start-app2:dev": "nest start app2 --watch",
     "start-gw:dev": "nest start gw --watch",
     "start-products:dev": "nest start products --watch",
+    "start-orders:dev": "nest start orders --watch",
     "start:dev": "nest start --watch",
     "start-all:dev": "concurrently \"yarn start-redis\" \"yarn start-gw:dev\" \"yarn start-products:dev\"",
     "start:debug": "nest start --debug --watch",
