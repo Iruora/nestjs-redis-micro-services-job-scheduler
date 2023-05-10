@@ -11,6 +11,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { Observable, lastValueFrom, map, tap } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { Product } from 'apps/products/src/schemas/product';
+import { Order } from 'apps/orders/src/schemas/order';
 
 @Controller()
 export class GatewayController {
@@ -79,6 +80,24 @@ export class GatewayController {
     return lastValueFrom(
       this.httpService
         .patch(`${process.env.PRODUCTS_MS_URL}/${id}`, product)
+        .pipe(map((response) => response.data)),
+    );
+  }
+
+  @Get('orders')
+  async getOrders(): Promise<Array<Order>> {
+    return lastValueFrom(
+      this.httpService
+        .get<Order[]>(process.env.ORDERS_MS_URL)
+        .pipe(map((response) => response.data)),
+    );
+  }
+
+  @Post('orders')
+  async saveOrder(@Body() order: Order): Promise<Order> {
+    return lastValueFrom(
+      this.httpService
+        .post<Order>(process.env.ORDERS_MS_URL, order)
         .pipe(map((response) => response.data)),
     );
   }
