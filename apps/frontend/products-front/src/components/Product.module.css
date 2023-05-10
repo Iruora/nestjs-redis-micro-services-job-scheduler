@@ -1,0 +1,28 @@
+.product--title {
+  font-size: 50px;
+  color: black;
+  /* padding: 5px; */
+  background-color: gold;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 5px;
+}
+
+.product--description {
+  padding: 15px;
+}
+
+.product--quantity {
+  padding: 15px;
+  color: green;
+  font-weight: 700;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product--out-of-stock {
+  padding: 15px;
+  color: red;
+}

@@ -1,0 +1,13 @@
+.product-container {
+  list-style: none;
+  background-color: ghostwhite;
+  color: darkslategray;
+  border-radius: 25px;
+}
+
+.productList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-inline-start: 0;
+}

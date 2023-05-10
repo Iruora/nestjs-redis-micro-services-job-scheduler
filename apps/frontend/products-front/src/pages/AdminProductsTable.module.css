@@ -1,0 +1,20 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.table thead {
+  background-color: whitesmoke;
+  color: black;
+}
+
+.table tr {
+  border-bottom: 1px white solid;
+  height: 70px;
+}
+
+.table tr:hover {
+  background-color: gold;
+  color: black;
+}

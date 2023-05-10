@@ -1,0 +1,30 @@
+.mainNavigation {
+  display: flex;
+  flex-direction: row;
+  background-color: gold;
+  align-items: center;
+  height: 70px;
+  margin: 0;
+}
+
+.mainNavigation > li {
+  width: 150px;
+  list-style: none;
+  font-size: xx-large;
+}
+
+.mainNavigation a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+
+.mainNavigation a:hover,
+.mainNavigation a.active 
+.mainNavigation a:active {
+  color: black;
+}
+
+.mainNavigation .linkActive {
+  color: gray;
+}
