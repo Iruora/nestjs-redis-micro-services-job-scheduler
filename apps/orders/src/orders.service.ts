@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Order } from './schemas/order';
+import { Order, OrderStatus } from './schemas/order';
 import { Model } from 'mongoose';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -16,11 +16,36 @@ export class OrdersService {
   }
 
   async createOrder(order: Order): Promise<Order> {
+    const createdOrder = await this.orderModel.create(order);
+
     this.redisClient.emit('REDUCE_QTY', {
       productId: order.productId,
       quantity: order.quantity,
+      orderId: createdOrder._id,
     });
 
-    return this.orderModel.create(order);
+    return order;
+  }
+
+  async rejectOrder({
+    orderId,
+    reason,
+  }: {
+    orderId: string;
+    reason: string;
+  }): Promise<void> {
+    console.log('rejectOrder ', orderId);
+
+    await this.orderModel.updateOne(
+      { _id: orderId },
+      { status: OrderStatus.REJECTED, rejectionReason: reason },
+    );
+  }
+
+  async acceptOrder(orderId: string): Promise<void> {
+    await this.orderModel.updateOne(
+      { _id: orderId },
+      { status: OrderStatus.ACCEPTED },
+    );
   }
 }

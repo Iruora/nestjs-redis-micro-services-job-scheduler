@@ -20,7 +20,7 @@ export default function AdminProductsTable() {
       },
       {
         Header: 'quantity',
-        accessor: 'quantity' as keyof ProductProps, // accessor is the "key" in the data
+        accessor: 'quantity' as keyof ProductProps,
       },
     ],
     [],

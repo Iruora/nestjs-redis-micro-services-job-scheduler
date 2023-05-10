@@ -2,6 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type OrderDocument = HydratedDocument<Order>;
+export enum OrderStatus {
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+  IDLE = 'IDLE',
+}
 
 @Schema()
 export class Order {
@@ -25,6 +30,12 @@ export class Order {
 
   @Prop({ required: true })
   productId: string;
+
+  @Prop({ required: true, default: OrderStatus.IDLE })
+  status: OrderStatus;
+
+  @Prop({ required: true, default: OrderStatus.IDLE })
+  rejectionReason: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

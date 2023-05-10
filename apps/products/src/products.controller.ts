@@ -32,20 +32,13 @@ export class ProductsController {
   }
 
   @MessagePattern('REDUCE_QTY')
-  async handleMessage(data: {
+  async reduceOrderQuantity(data: {
     productId: string;
     quantity: number;
+    orderId: string;
   }): Promise<void> {
+    const { productId, quantity, orderId } = data;
     console.log(`Received message: ${data.productId} ${data.quantity}`);
-    const currentProduct = await this.productsService.getProductDetails(
-      data.productId,
-    );
-    const newQuantity = currentProduct.quantity - data.quantity;
-
-    if (newQuantity < 0) {
-      throw new Error('Not enough quantity');
-    }
-
-    this.productsService.updateProductQuantity(data.productId, newQuantity);
+    this.productsService.reduceProductQuantity(productId, quantity, orderId);
   }
 }

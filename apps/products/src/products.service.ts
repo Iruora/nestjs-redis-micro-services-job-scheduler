@@ -1,12 +1,19 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Product } from './schemas/product';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ClientProxy } from '@nestjs/microservices';
+import { tap } from 'rxjs';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
+    @Inject('PRODUCTS') private readonly redisClient: ClientProxy,
   ) {}
 
   async findAll(): Promise<Product[]> {
@@ -35,5 +42,27 @@ export class ProductsService {
 
   async getProductDetails(id: string): Promise<Product> {
     return this.productModel.findById(id);
+  }
+
+  async reduceProductQuantity(
+    productId: string,
+    quantity: number,
+    orderId: string,
+  ): Promise<void> {
+    const currentProduct = await this.getProductDetails(productId);
+    const newQuantity = currentProduct.quantity - quantity;
+
+    if (newQuantity < 0) {
+      this.redisClient.emit('REJECT_ORDER', {
+        orderId,
+        reason: 'Not enough products',
+      });
+
+      return;
+    }
+
+    this.redisClient.emit('ACCEPT_ORDER', orderId);
+
+    this.updateProductQuantity(productId, newQuantity);
   }
 }
