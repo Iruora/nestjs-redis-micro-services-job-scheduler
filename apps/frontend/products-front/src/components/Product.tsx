@@ -21,12 +21,14 @@ export default function Product({ name, description, quantity }: ProductProps) {
         }
       >
         {quantity === 0 ? 'Out of Stock' : `available in ${quantity} items`}
-        <button
-          className={classes['product--order-btn']}
-          disabled={quantity === 0}
-        >
-          Order
-        </button>
+        {quantity > 0 && (
+          <button
+            className={classes['product--order-btn']}
+            disabled={quantity === 0}
+          >
+            Order
+          </button>
+        )}
       </div>
     </>
   );

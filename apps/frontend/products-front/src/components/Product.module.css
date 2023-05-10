@@ -25,4 +25,5 @@
 .product--out-of-stock {
   padding: 15px;
   color: red;
+  font-weight: 700;
 }
