@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -28,6 +29,9 @@ export class ProductsService {
     id: string,
     newQuantity: number,
   ): Promise<Product> {
+    if (newQuantity < 0) {
+      throw new BadRequestException('Quantity must be positive');
+    }
     const updateResult = await this.productModel.updateOne(
       { _id: id },
       { quantity: newQuantity },
