@@ -15,8 +15,6 @@ export default function ProductsPage() {
 
 export async function loader() {
   const response = await fetch('http://localhost:3000/products');
-  console.log('loader !!!!!');
-  
 
   if (response.status !== 200) {
     throw new Error('Something went wrong!');

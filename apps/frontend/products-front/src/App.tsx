@@ -2,7 +2,12 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './pages/RootLayout';
 import ProductsPage, { loader as productsLoader } from './pages/ProductsPage';
 import AdminLayout from './pages/AdminLayout';
-import AdminProductsTable from './pages/AdminProductsTable';
+import AdminProductsTable, {
+  action as updateAction,
+} from './pages/AdminProductsTable';
+import AdminOrdersTable, {
+  loader as orderLoader,
+} from './pages/AdminOrdersTable';
 
 function App() {
   const routes = [
@@ -20,9 +25,15 @@ function App() {
           element: <AdminLayout />,
           children: [
             {
-              index: true,
+              path: 'products',
               element: <AdminProductsTable />,
               loader: productsLoader,
+              action: updateAction,
+            },
+            {
+              path: 'orders',
+              element: <AdminOrdersTable />,
+              loader: orderLoader,
             },
           ],
         },

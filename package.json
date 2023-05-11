@@ -16,6 +16,7 @@
     "start-gw:dev": "nest start gw --watch",
     "start-products:dev": "nest start products --watch",
     "start-orders:dev": "nest start orders --watch",
+    "start-ui:dev": "cd apps/frontend/products-front && yarn dev",
     "start:dev": "nest start --watch",
     "start-all:dev": "concurrently \"yarn start-redis\" \"yarn start-gw:dev\" \"yarn start-products:dev\"",
     "start:debug": "nest start --debug --watch",
@@ -28,6 +29,10 @@
     "test:e2e": "jest --config ./apps/job-scheduler/test/jest-e2e.json"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.0",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",

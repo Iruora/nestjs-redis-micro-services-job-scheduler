@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, lastValueFrom, map, tap } from 'rxjs';
@@ -72,7 +73,7 @@ export class GatewayController {
     );
   }
 
-  @Patch('products/:id')
+  @Put('products/:id')
   async updateProductQuantity(
     @Body() product: Pick<Product, 'quantity'>,
     @Param('id') id: string,

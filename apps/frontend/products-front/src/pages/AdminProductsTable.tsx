@@ -1,8 +1,9 @@
 import React from 'react';
 import { useTable, Column } from 'react-table';
 import { ProductProps } from '../components/Product';
-import { useLoaderData } from 'react-router-dom';
+import { ActionFunctionArgs, useLoaderData } from 'react-router-dom';
 import classes from './AdminProductsTable.module.css';
+import QuantityCell from '../components/QuantityCell';
 
 export default function AdminProductsTable() {
   const products = useLoaderData() as ProductProps[];
@@ -21,6 +22,7 @@ export default function AdminProductsTable() {
       {
         Header: 'quantity',
         accessor: 'quantity' as keyof ProductProps,
+        Cell: QuantityCell,
       },
     ],
     [],
@@ -47,15 +49,7 @@ export default function AdminProductsTable() {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                const cellProps = cell.getCellProps();
-
-                if (cell.column.Header === 'quantity' && cell.value <= 10) {
-                  cellProps.style = { fontWeight: 'bold', color: 'red' };
-                } else if (cell.column.Header === 'quantity') {
-                  cellProps.style = { fontWeight: 'bold', color: 'green' };
-                }
-
-                return <td {...cellProps}>{cell.render('Cell')}</td>;
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
               })}
             </tr>
           );
@@ -63,4 +57,21 @@ export default function AdminProductsTable() {
       </tbody>
     </table>
   );
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const { quantity, productId } = Object.fromEntries(formData);
+  console.log({ quantity, productId });
+
+  const response = await fetch(`http://localhost:3000/products/${productId}`, {
+    method: 'put',
+    body: JSON.stringify({ quantity }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
 }

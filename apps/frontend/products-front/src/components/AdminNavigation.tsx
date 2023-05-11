@@ -1,27 +1,27 @@
 import { NavLink } from 'react-router-dom';
-import classes from './MainNavigation.module.css';
+import classes from './AdminNavigation.module.css';
 
-export default function MainNavigation() {
+export default function AdminNavigation() {
   return (
     <ul className={classes.mainNavigation}>
       <li>
         <NavLink
-          to="/"
+          to="products"
           className={({ isActive }) =>
             isActive ? classes.linkActive : undefined
           }
         >
-          Home
+          Products
         </NavLink>
       </li>
       <li>
         <NavLink
-          to="/admin/products"
+          to="orders"
           className={({ isActive }) =>
             isActive ? classes.linkActive : undefined
           }
         >
-          Admin
+          Orders
         </NavLink>
       </li>
     </ul>

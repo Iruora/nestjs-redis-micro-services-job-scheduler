@@ -1,0 +1,29 @@
+.quantityCell {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.lowQuantity {
+  color: red;
+  font-weight: 600;
+}
+
+.quantity {
+  color: greenyellow;
+  font-weight: 600;
+}
+
+.quantityButton {
+  background-color: whitesmoke;
+  color: black;
+}
+
+.quantityButton:disabled,
+.quantityButton:disabled:hover {
+  background-color: darkgrey;
+  color: black;
+  cursor: auto;
+}
