@@ -1,24 +1,26 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './pages/RootLayout';
-import ProductsPage, { loader as productsLoader } from './pages/ProductsPage';
 import AdminLayout from './pages/AdminLayout';
-import AdminProductsTable, {
-  action as updateAction,
-} from './pages/AdminProductsTable';
-import AdminOrdersTable, {
-  loader as orderLoader,
-} from './pages/AdminOrdersTable';
+import Errorpage from './pages/ErrorPage';
 
 function App() {
   const routes = [
     {
       path: '/',
       element: <RootLayout />,
+      errorElement: <Errorpage />,
       children: [
         {
           index: true,
-          element: <ProductsPage />,
-          loader: productsLoader,
+          async lazy() {
+            const { default: ProductsPage, loader: productsLoader } =
+              await import('./pages/ProductsPage');
+
+            return {
+              Component: ProductsPage,
+              loader: productsLoader,
+            };
+          },
         },
         {
           path: 'admin',
@@ -26,14 +28,30 @@ function App() {
           children: [
             {
               path: 'products',
-              element: <AdminProductsTable />,
-              loader: productsLoader,
-              action: updateAction,
+              async lazy() {
+                const { loader: productsLoader } = await import(
+                  './pages/ProductsPage'
+                );
+                const { default: AdminProductsTable, action: updateAction } =
+                  await import('./pages/AdminProductsTable');
+                return {
+                  Component: AdminProductsTable,
+                  action: updateAction,
+                  loader: productsLoader,
+                };
+              },
             },
             {
               path: 'orders',
-              element: <AdminOrdersTable />,
-              loader: orderLoader,
+              async lazy() {
+                const { default: AdminOrdersTable, loader: orderLoader } =
+                  await import('./pages/AdminOrdersTable');
+
+                return {
+                  Component: AdminOrdersTable,
+                  loader: orderLoader,
+                };
+              },
             },
           ],
         },

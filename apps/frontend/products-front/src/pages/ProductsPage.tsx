@@ -14,10 +14,10 @@ export default function ProductsPage() {
 }
 
 export async function loader() {
-  const response = await fetch('http://localhost:3000/products');
+  const response = await fetch(`${import.meta.env.VITE_GW_URL}/products`);
 
   if (response.status !== 200) {
-    throw new Error('Something went wrong!');
+    throw response;
   }
 
   const products: Array<ProductProps> = await response.json();

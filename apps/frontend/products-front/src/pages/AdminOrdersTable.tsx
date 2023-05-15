@@ -129,7 +129,7 @@ export default function AdminOrdersTable() {
 }
 
 export async function loader() {
-  const response = await fetch('http://localhost:3000/orders');
+  const response = await fetch(`${import.meta.env.VITE_GW_URL}/orders`);
 
   if (response.status !== 200) {
     throw new Error('Something went wrong!');

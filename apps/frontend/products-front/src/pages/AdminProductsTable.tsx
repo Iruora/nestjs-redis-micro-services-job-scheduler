@@ -43,14 +43,9 @@ export default function AdminProductsTable() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.length === 0 && (
+      {rows.length === 0 && (
           <tr>
-            <td
-              style={{ textAlign: 'center', fontSize: '1.75rem' }}
-              colSpan={9}
-            >
-              No elements found
-            </td>
+            <td style={{ textAlign: 'center', fontSize: '1.75rem' }} colSpan={9}>No elements found</td>
           </tr>
         )}
         {rows.map((row) => {
@@ -74,7 +69,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const { quantity, productId } = Object.fromEntries(formData);
   console.log({ quantity, productId });
 
-  const response = await fetch(`http://localhost:3000/products/${productId}`, {
+  const response = await fetch(`${import.meta.env.VITE_GW_URL}/products/${productId}`, {
     method: 'put',
     body: JSON.stringify({ quantity }),
     headers: {
