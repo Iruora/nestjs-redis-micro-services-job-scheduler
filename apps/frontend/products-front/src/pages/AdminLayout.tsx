@@ -6,7 +6,6 @@ export default function AdminLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(location.pathname);
     if (location.pathname === '/admin') {
       navigate('/admin/products');
     }

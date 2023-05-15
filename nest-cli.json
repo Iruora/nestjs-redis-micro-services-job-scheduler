@@ -19,24 +19,6 @@
         "tsConfigPath": "apps/job-scheduler/tsconfig.app.json"
       }
     },
-    "app1": {
-      "type": "application",
-      "root": "apps/app1",
-      "entryFile": "main",
-      "sourceRoot": "apps/app1/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/app1/tsconfig.app.json"
-      }
-    },
-    "app2": {
-      "type": "application",
-      "root": "apps/app2",
-      "entryFile": "main",
-      "sourceRoot": "apps/app2/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/app2/tsconfig.app.json"
-      }
-    },
     "gateway": {
       "type": "application",
       "root": "apps/gateway",
