@@ -31,7 +31,6 @@ export class GatewayModule {
     console.log('GW', {
       host: process.env.REDIS_HOST,
       port: process.env.REDIS_PORT as unknown as number,
-      // password: process.env.REDIS_PASSWORD,
       connectionName: 'GW',
     });
   }
