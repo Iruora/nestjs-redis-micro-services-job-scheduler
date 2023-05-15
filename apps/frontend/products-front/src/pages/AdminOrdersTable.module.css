@@ -34,8 +34,3 @@
 .orderIdle {
   color: rgb(167, 167, 167);
 }
-
-.pasteIcon:hover {
-  color: whitesmoke;
-  transform: scale(1.15);
-}

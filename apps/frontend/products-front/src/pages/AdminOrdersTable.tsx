@@ -2,11 +2,11 @@ import React from 'react';
 import { useTable, Column, CellProps } from 'react-table';
 import { Order } from '../types/order';
 import { Link, useLoaderData } from 'react-router-dom';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import LaunchIcon from '@mui/icons-material/Launch';
 import classes from './AdminOrdersTable.module.css';
 import Status from '../components/Status';
 import DateFormatter from '../components/DateFormater';
+import CopyButton from '../components/CopyButton';
 
 export default function AdminOrdersTable() {
   const orders = useLoaderData() as Order[];
@@ -31,16 +31,7 @@ export default function AdminOrdersTable() {
       {
         Header: 'id',
         accessor: '_id' as keyof Order,
-        Cell: (props: CellProps<Order>) => (
-          <div className={classes.pasteIcon}>
-            <ContentPasteIcon
-              onClick={() => {
-                navigator.clipboard.writeText(props.value);
-              }}
-              className={classes.pasteIcon}
-            />
-          </div>
-        ),
+        Cell: CopyButton,
       },
       {
         Header: 'Name',
