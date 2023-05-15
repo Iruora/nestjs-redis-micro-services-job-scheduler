@@ -32,6 +32,7 @@ export class ProductsService {
     if (newQuantity < 0) {
       throw new BadRequestException('Quantity must be positive');
     }
+
     const updateResult = await this.productModel.updateOne(
       { _id: id },
       { quantity: newQuantity },

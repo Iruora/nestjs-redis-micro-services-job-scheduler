@@ -43,6 +43,16 @@ export default function AdminProductsTable() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
+        {rows.length === 0 && (
+          <tr>
+            <td
+              style={{ textAlign: 'center', fontSize: '1.75rem' }}
+              colSpan={9}
+            >
+              No elements found
+            </td>
+          </tr>
+        )}
         {rows.map((row) => {
           prepareRow(row);
 

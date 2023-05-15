@@ -1,15 +1,47 @@
 import React from 'react';
-import { useTable, Column } from 'react-table';
+import { useTable, Column, CellProps } from 'react-table';
 import { Order } from '../types/order';
-import { useLoaderData } from 'react-router-dom';
-import classes from './AdminProductsTable.module.css';
+import { Link, useLoaderData } from 'react-router-dom';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import LaunchIcon from '@mui/icons-material/Launch';
+import classes from './AdminOrdersTable.module.css';
+import Status from '../components/Status';
+import DateFormatter from '../components/DateFormater';
 
 export default function AdminOrdersTable() {
   const orders = useLoaderData() as Order[];
   const data = React.useMemo(() => orders, []);
+  const getStatusClassNames = (status: string) => {
+    switch (status) {
+      case 'IDLE':
+        return classes.orderIdle;
+      case 'SUCCESS':
+        return classes.orderSuccess;
+      case 'FAILED':
+        return classes.orderFailed;
+      case 'DELIVERED':
+        return classes.orderDelivered;
+      default:
+        return classes.orderPending;
+    }
+  };
 
   const columns: Column<Order>[] = React.useMemo(
     () => [
+      {
+        Header: 'id',
+        accessor: '_id' as keyof Order,
+        Cell: (props: CellProps<Order>) => (
+          <div className={classes.pasteIcon}>
+            <ContentPasteIcon
+              onClick={() => {
+                navigator.clipboard.writeText(props.value);
+              }}
+              className={classes.pasteIcon}
+            />
+          </div>
+        ),
+      },
       {
         Header: 'Name',
         accessor: 'beneficiaryName' as keyof Order,
@@ -25,10 +57,16 @@ export default function AdminOrdersTable() {
       {
         Header: 'orderDate',
         accessor: 'orderDate' as keyof Order,
+        Cell: ({ value }: CellProps<Order>) => {
+          return <DateFormatter date={new Date(value)} />;
+        },
       },
       {
         Header: 'deliveryDate',
         accessor: 'deliveryDate' as keyof Order,
+        Cell: ({ value }: CellProps<Order>) => {
+          return <DateFormatter date={new Date(value)} />;
+        },
       },
       {
         Header: 'address',
@@ -37,10 +75,22 @@ export default function AdminOrdersTable() {
       {
         Header: 'productId',
         accessor: 'productId' as keyof Order,
+        Cell: ({ value }: CellProps<Order>) => {
+          return (
+            <div>
+              <Link to={`/products/${value}`}>
+                <LaunchIcon />
+              </Link>
+            </div>
+          );
+        },
       },
       {
         Header: 'status',
         accessor: 'status' as keyof Order,
+        Cell: (props: CellProps<Order>) => (
+          <Status className={getStatusClassNames(props.value)} />
+        ),
       },
     ],
     [],
@@ -61,6 +111,16 @@ export default function AdminOrdersTable() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
+        {rows.length === 0 && (
+          <tr>
+            <td
+              style={{ textAlign: 'center', fontSize: '1.75rem' }}
+              colSpan={9}
+            >
+              No elements found
+            </td>
+          </tr>
+        )}
         {rows.map((row) => {
           prepareRow(row);
 

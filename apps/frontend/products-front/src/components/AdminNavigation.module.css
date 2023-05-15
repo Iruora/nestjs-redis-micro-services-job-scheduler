@@ -14,14 +14,15 @@
 }
 
 .mainNavigation a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-  }
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-shadow: -1px 1px 0 #ccc, 1px 1px 0 #ccc, 1px -1px 0 #ccc,
+    -1px -1px 0 #ccc;
+}
 
 .mainNavigation a:hover,
-.mainNavigation a.active 
-.mainNavigation a:active {
+.mainNavigation a.active .mainNavigation a:active {
   color: black;
 }
 

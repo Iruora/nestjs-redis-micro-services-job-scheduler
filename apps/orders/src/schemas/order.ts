@@ -3,9 +3,12 @@ import { HydratedDocument } from 'mongoose';
 
 export type OrderDocument = HydratedDocument<Order>;
 export enum OrderStatus {
-  ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED',
   IDLE = 'IDLE',
+  REJECTED = 'REJECTED',
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  DELIVERY_IN_PROGRESS = 'DELIVERY_IN_PROGRESS',
+  DELIVERED = 'DELIVERED',
 }
 
 @Schema()

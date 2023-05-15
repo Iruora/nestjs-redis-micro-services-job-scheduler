@@ -45,7 +45,7 @@ export class OrdersService {
   async acceptOrder(orderId: string): Promise<void> {
     await this.orderModel.updateOne(
       { _id: orderId },
-      { status: OrderStatus.ACCEPTED },
+      { status: OrderStatus.PENDING },
     );
   }
 }
