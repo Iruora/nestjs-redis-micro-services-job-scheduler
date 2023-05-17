@@ -51,10 +51,19 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
   background-color: #213547;
+  color: white;
 }
+
+button:disabled, button:disabled:hover {
+  color: gray;
+  background-color: transparent;
+  border-color: transparent;
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

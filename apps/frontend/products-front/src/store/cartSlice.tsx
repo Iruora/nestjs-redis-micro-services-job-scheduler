@@ -16,7 +16,10 @@ const cartSlice = createSlice({
 
       const updatedProduct = {
         ...existingProduct,
-        orderQuantity: existingProduct?.orderQuantity + 1,
+        orderQuantity:
+          existingProduct?.orderQuantity < existingProduct?.quantity
+            ? existingProduct?.orderQuantity + 1
+            : existingProduct?.quantity,
       };
 
       state.products = [

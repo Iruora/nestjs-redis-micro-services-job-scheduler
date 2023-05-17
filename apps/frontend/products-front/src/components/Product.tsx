@@ -112,7 +112,7 @@ export default function Product({
             </Tooltip>
             <button
               className={classes['product--order-btn']}
-              disabled={quantity === 0}
+              disabled={quantity === 0 || orderQuantity > quantity}
               type="submit"
               onClick={() => {
                 location.reload();
