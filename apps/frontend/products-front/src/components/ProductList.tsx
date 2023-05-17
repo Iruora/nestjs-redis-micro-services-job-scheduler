@@ -1,20 +1,32 @@
-import React from 'react';
-import Product, { ProductProps } from './Product';
+import Product from './Product';
 import classes from './ProductList.module.css';
+import { IProduct } from '../types/product';
 
 export interface ProductListProps {
-  products: ProductProps[];
+  products: IProduct[];
+  cartMode?: boolean;
 }
 
-function ProductList({ products }: ProductListProps) {
+function ProductList({ products, cartMode = false }: ProductListProps) {
   return (
-    <ul className={classes.productList}>
-      {products.map((product) => (
-        <li key={product._id} className={classes['product-container']}>
-          <Product {...product} />
-        </li>
-      ))}
-    </ul>
+    <>
+      {products.length === 0 && (
+        <p className="text-center text-3xl align-middle h-full	">
+          No products found
+        </p>
+      )}
+      <ul
+        className={
+          cartMode ? classes['productList__cart'] : classes.productList
+        }
+      >
+        {products.map((product) => (
+          <li key={product._id} className={classes['product-container']}>
+            <Product {...product} cartMode={cartMode} />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 

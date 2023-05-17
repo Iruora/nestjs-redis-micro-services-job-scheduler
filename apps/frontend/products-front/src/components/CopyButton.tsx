@@ -1,11 +1,11 @@
 import React from 'react';
 import { CellProps } from 'react-table';
-import { Order } from '../types/order';
+import { IOrder } from '../types/order';
 import { Tooltip, IconButton, Snackbar, Alert } from '@mui/material';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import classes from './CopyButton.module.css';
 
-export default function CopyButton(props: CellProps<Order>) {
+export default function CopyButton(props: CellProps<IOrder>) {
   const [open, setOpen] = React.useState(false);
 
   return (

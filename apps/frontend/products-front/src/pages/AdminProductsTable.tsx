@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTable, Column } from 'react-table';
-import { ProductProps } from '../components/Product';
-import { ActionFunctionArgs, useLoaderData } from 'react-router-dom';
+import { ActionFunctionArgs, redirect, useLoaderData } from 'react-router-dom';
 import classes from './AdminProductsTable.module.css';
 import QuantityCell from '../components/QuantityCell';
+import { IProduct } from '../types/product';
 
 export default function AdminProductsTable() {
-  const products = useLoaderData() as ProductProps[];
+  const products = useLoaderData() as IProduct[];
   const data = React.useMemo(() => products, []);
 
-  const columns: Column<ProductProps>[] = React.useMemo(
+  const columns: Column<IProduct>[] = React.useMemo(
     () => [
       {
         Header: 'Name',
-        accessor: 'name' as keyof ProductProps,
+        accessor: 'name' as keyof IProduct,
       },
       {
         Header: 'Description',
-        accessor: 'description' as keyof ProductProps,
+        accessor: 'description' as keyof IProduct,
       },
       {
         Header: 'quantity',
-        accessor: 'quantity' as keyof ProductProps,
+        accessor: 'quantity' as keyof IProduct,
         Cell: QuantityCell,
       },
     ],
@@ -29,7 +29,7 @@ export default function AdminProductsTable() {
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<ProductProps>({ columns, data });
+    useTable<IProduct>({ columns, data });
 
   return (
     <table {...getTableProps()} className={classes.table}>
@@ -43,9 +43,14 @@ export default function AdminProductsTable() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-      {rows.length === 0 && (
+        {rows.length === 0 && (
           <tr>
-            <td style={{ textAlign: 'center', fontSize: '1.75rem' }} colSpan={9}>No elements found</td>
+            <td
+              style={{ textAlign: 'center', fontSize: '1.75rem' }}
+              colSpan={9}
+            >
+              No elements found
+            </td>
           </tr>
         )}
         {rows.map((row) => {
@@ -69,7 +74,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const { quantity, productId } = Object.fromEntries(formData);
   console.log({ quantity, productId });
 
-  const response = await fetch(`${import.meta.env.VITE_GW_URL}/products/${productId}`, {
+  await fetch(`${import.meta.env.VITE_GW_URL}/products/${productId}`, {
     method: 'put',
     body: JSON.stringify({ quantity }),
     headers: {
@@ -78,5 +83,5 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   });
 
-  return response;
+  return redirect('/admin/products');
 }

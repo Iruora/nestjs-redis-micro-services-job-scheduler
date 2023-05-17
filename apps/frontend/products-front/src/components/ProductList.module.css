@@ -6,6 +6,13 @@
 }
 
 .productList {
+  gap: 15px;
+  padding-inline-start: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 200px [col-start]);
+}
+
+.productList__cart {
   display: flex;
   flex-direction: column;
   gap: 15px;

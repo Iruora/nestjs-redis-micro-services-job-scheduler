@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTable, Column, CellProps } from 'react-table';
-import { Order } from '../types/order';
+import { IOrder } from '../types/order';
 import { Link, useLoaderData } from 'react-router-dom';
 import LaunchIcon from '@mui/icons-material/Launch';
 import classes from './AdminOrdersTable.module.css';
@@ -9,7 +9,7 @@ import DateFormatter from '../components/DateFormater';
 import CopyButton from '../components/CopyButton';
 
 export default function AdminOrdersTable() {
-  const orders = useLoaderData() as Order[];
+  const orders = useLoaderData() as IOrder[];
   const data = React.useMemo(() => orders, []);
   const getStatusClassNames = (status: string) => {
     switch (status) {
@@ -17,7 +17,7 @@ export default function AdminOrdersTable() {
         return classes.orderIdle;
       case 'SUCCESS':
         return classes.orderSuccess;
-      case 'FAILED':
+      case 'REJECTED':
         return classes.orderFailed;
       case 'DELIVERED':
         return classes.orderDelivered;
@@ -26,47 +26,47 @@ export default function AdminOrdersTable() {
     }
   };
 
-  const columns: Column<Order>[] = React.useMemo(
+  const columns: Column<IOrder>[] = React.useMemo(
     () => [
       {
         Header: 'id',
-        accessor: '_id' as keyof Order,
+        accessor: '_id' as keyof IOrder,
         Cell: CopyButton,
       },
       {
         Header: 'Name',
-        accessor: 'beneficiaryName' as keyof Order,
+        accessor: 'beneficiaryName' as keyof IOrder,
       },
       {
         Header: 'Description',
-        accessor: 'description' as keyof Order,
+        accessor: 'description' as keyof IOrder,
       },
       {
         Header: 'quantity',
-        accessor: 'quantity' as keyof Order,
+        accessor: 'quantity' as keyof IOrder,
       },
       {
         Header: 'orderDate',
-        accessor: 'orderDate' as keyof Order,
-        Cell: ({ value }: CellProps<Order>) => {
+        accessor: 'orderDate' as keyof IOrder,
+        Cell: ({ value }: CellProps<IOrder>) => {
           return <DateFormatter date={new Date(value)} />;
         },
       },
       {
         Header: 'deliveryDate',
-        accessor: 'deliveryDate' as keyof Order,
-        Cell: ({ value }: CellProps<Order>) => {
+        accessor: 'deliveryDate' as keyof IOrder,
+        Cell: ({ value }: CellProps<IOrder>) => {
           return <DateFormatter date={new Date(value)} />;
         },
       },
       {
         Header: 'address',
-        accessor: 'address' as keyof Order,
+        accessor: 'address' as keyof IOrder,
       },
       {
         Header: 'productId',
-        accessor: 'productId' as keyof Order,
-        Cell: ({ value }: CellProps<Order>) => {
+        accessor: 'productId' as keyof IOrder,
+        Cell: ({ value }: CellProps<IOrder>) => {
           return (
             <div>
               <Link to={`/products/${value}`}>
@@ -78,8 +78,8 @@ export default function AdminOrdersTable() {
       },
       {
         Header: 'status',
-        accessor: 'status' as keyof Order,
-        Cell: (props: CellProps<Order>) => (
+        accessor: 'status' as keyof IOrder,
+        Cell: (props: CellProps<IOrder>) => (
           <Status className={getStatusClassNames(props.value)} />
         ),
       },
@@ -88,7 +88,7 @@ export default function AdminOrdersTable() {
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<Order>({ columns, data });
+    useTable<IOrder>({ columns, data });
 
   return (
     <table {...getTableProps()} className={classes.table}>
@@ -135,7 +135,7 @@ export async function loader() {
     throw new Error('Something went wrong!');
   }
 
-  const orders: Array<Order> = await response.json();
+  const orders: Array<IOrder> = await response.json();
 
   return orders;
 }

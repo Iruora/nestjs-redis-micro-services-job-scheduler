@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { CellProps } from 'react-table';
-import { ProductProps } from './Product';
 import classes from './QuantityCell.module.css';
 import { Form, useActionData } from 'react-router-dom';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { IProduct } from '../types/product';
 
-export default function QuantityCell(props: CellProps<ProductProps>) {
+export default function QuantityCell(props: CellProps<IProduct>) {
   const [isEditing, setIsEditing] = useState(false);
-  const response = useActionData() as ProductProps;
+  const response = useActionData() as IProduct;
 
   useEffect(() => {
     if (response && response._id) {
@@ -19,7 +19,7 @@ export default function QuantityCell(props: CellProps<ProductProps>) {
   }, [response]);
 
   return (
-    <Form className={classes.quantityCell} method="post" action="">
+    <Form className={classes.quantityCell} method="post" action="" replace>
       {isEditing ? (
         <>
           <input type="number" defaultValue={props.value} name="quantity" />

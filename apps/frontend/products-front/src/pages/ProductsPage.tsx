@@ -1,11 +1,12 @@
 import React from 'react';
 import ProductsList from '../components/ProductList';
 import { useLoaderData } from 'react-router-dom';
-import { ProductProps } from '../components/Product';
+import { IProduct } from '../types/product';
 import classes from './ProductsPage.module.css';
 
 export default function ProductsPage() {
-  const products: Array<ProductProps> = useLoaderData() as Array<ProductProps>;
+  const products: Array<IProduct> = useLoaderData() as Array<IProduct>;
+
   return (
     <div className={classes['product-container']}>
       <ProductsList products={products} />
@@ -20,7 +21,7 @@ export async function loader() {
     throw response;
   }
 
-  const products: Array<ProductProps> = await response.json();
+  const products: Array<IProduct> = await response.json();
 
   return products;
 }

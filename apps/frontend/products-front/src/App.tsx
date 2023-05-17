@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './pages/RootLayout';
 import AdminLayout from './pages/AdminLayout';
 import Errorpage from './pages/ErrorPage';
+import { action as productsAction } from './components/Product';
 
 function App() {
   const routes = [
@@ -9,6 +10,7 @@ function App() {
       path: '/',
       element: <RootLayout />,
       errorElement: <Errorpage />,
+      action: productsAction,
       children: [
         {
           index: true,
@@ -19,6 +21,16 @@ function App() {
             return {
               Component: ProductsPage,
               loader: productsLoader,
+            };
+          },
+        },
+        {
+          path: '/cart',
+          async lazy() {
+            const { default: CartPage } = await import('./pages/CartPage');
+
+            return {
+              Component: CartPage,
             };
           },
         },
