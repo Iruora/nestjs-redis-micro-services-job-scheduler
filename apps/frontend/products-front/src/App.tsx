@@ -44,12 +44,21 @@ function App() {
                 const { loader: productsLoader } = await import(
                   './pages/ProductsPage'
                 );
-                const { default: AdminProductsTable, action: updateAction } =
-                  await import('./pages/AdminProductsTable');
+                const { default: AdminProductsTable } = await import(
+                  './pages/AdminProductsTable'
+                );
                 return {
                   Component: AdminProductsTable,
-                  action: updateAction,
                   loader: productsLoader,
+                };
+              },
+            },
+            {
+              path: 'products/update',
+              async lazy() {
+                const { action } = await import('./pages/AdminProductsTable');
+                return {
+                  action,
                 };
               },
             },

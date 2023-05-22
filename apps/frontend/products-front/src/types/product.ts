@@ -6,3 +6,7 @@ export interface IProduct extends Quantifiable {
   description: string;
   quantity: number;
 }
+
+export interface IProducts {
+  products: IProduct[];
+}
