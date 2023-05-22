@@ -4,11 +4,17 @@ import { Tooltip, IconButton } from '@mui/material';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Form, ActionFunctionArgs, redirect } from 'react-router-dom';
+import {
+  Form,
+  ActionFunctionArgs,
+  redirect,
+  useNavigate,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../store/cartSlice';
 import { IProduct } from '../types/product';
 import { RootState } from '../store';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export interface ProductProps extends IProduct {
   cartMode?: boolean;
@@ -26,6 +32,7 @@ export default function Product({
     getProductInitialQuantity(_id),
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function getProductInitialQuantity(productId: string) {
     const product = cartState.products.find(
@@ -68,6 +75,10 @@ export default function Product({
             method="post"
             action="/?order=true"
             className="flex flex-row justify-between items-center"
+            onSubmit={() => {
+              dispatch(cartActions.removeProduct({ _id }));
+              navigate(0);
+            }}
           >
             <input
               type="number"
@@ -110,16 +121,24 @@ export default function Product({
                 </IconButton>
               </span>
             </Tooltip>
-            <button
-              className={classes['product--order-btn']}
-              disabled={quantity === 0 || orderQuantity > quantity}
-              type="submit"
-              onClick={() => {
-                location.reload();
-              }}
-            >
-              Order
-            </button>
+            {orderQuantity !== 0 && (
+              <button
+                className={classes['product--order-btn']}
+                disabled={quantity === 0 || orderQuantity > quantity}
+                type="submit"
+              >
+                Order
+              </button>
+            )}
+            {orderQuantity === 0 && (
+              <IconButton
+                onClick={() => {
+                  dispatch(cartActions.removeProduct(_id));
+                }}
+              >
+                <DeleteForeverIcon />
+              </IconButton>
+            )}
           </Form>
         )}
         {quantity > 0 && !cartMode && (

@@ -9,7 +9,8 @@ export default function AdminLayout() {
     if (location.pathname === '/admin') {
       navigate('/admin/products');
     }
-  }, [navigate]);
+  }, []);
+
   return (
     <>
       <AdminNavigation />
