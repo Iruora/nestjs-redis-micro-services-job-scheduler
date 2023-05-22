@@ -1,11 +1,12 @@
 import React from 'react';
-import { useTable, Column, useSortBy } from 'react-table';
+import { useTable, Column, useSortBy, usePagination } from 'react-table';
 import { ActionFunctionArgs, redirect, useLoaderData } from 'react-router-dom';
 import classes from './AdminProductsTable.module.css';
 import QuantityCell from '../components/QuantityCell';
 import { IProduct } from '../types/product';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Paginator from '../components/Paginator';
 
 export default function AdminProductsTable() {
   // const products = useSelector((state: RootState) => state.products.products);
@@ -31,55 +32,89 @@ export default function AdminProductsTable() {
     [],
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<IProduct>({ columns, data }, useSortBy);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable<IProduct>({ columns, data }, useSortBy, usePagination);
 
   return (
-    <table {...getTableProps()} className={classes.table}>
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                {column.render('Header')}
-                {column.isSorted ? (
-                  column.isSortedDesc ? (
-                    <ExpandMoreIcon />
+    <>
+      <table {...getTableProps()} className={classes.table}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render('Header')}
+                  {column.isSorted ? (
+                    column.isSortedDesc ? (
+                      <ExpandMoreIcon />
+                    ) : (
+                      <ExpandLessIcon />
+                    )
                   ) : (
-                    <ExpandLessIcon />
-                  )
-                ) : (
-                  ''
-                )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.length === 0 && (
-          <tr>
-            <td
-              style={{ textAlign: 'center', fontSize: '1.75rem' }}
-              colSpan={9}
-            >
-              No elements found
-            </td>
-          </tr>
-        )}
-        {rows.map((row) => {
-          prepareRow(row);
-
-          return (
-            <tr {...row.getRowProps()} className="border-separate">
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-              })}
+                    ''
+                  )}
+                </th>
+              ))}
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.length === 0 && (
+            <tr>
+              <td
+                style={{ textAlign: 'center', fontSize: '1.75rem' }}
+                colSpan={9}
+              >
+                No elements found
+              </td>
+            </tr>
+          )}
+          {page.map((row) => {
+            prepareRow(row);
+
+            return (
+              <tr {...row.getRowProps()} className="border-separate">
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <Paginator
+        {...{
+          canPreviousPage,
+          canNextPage,
+          pageOptions,
+          pageCount,
+          gotoPage,
+          nextPage,
+          previousPage,
+          setPageSize,
+          pageIndex,
+          pageSize,
+          page,
+        }}
+      />
+    </>
   );
 }
 
