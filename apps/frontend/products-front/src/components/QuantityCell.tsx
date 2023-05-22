@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CellProps } from 'react-table';
 import classes from './QuantityCell.module.css';
-import { Form, useActionData, useNavigate } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -9,26 +9,9 @@ import { IProduct } from '../types/product';
 
 export default function QuantityCell(props: CellProps<IProduct>) {
   const [isEditing, setIsEditing] = useState(false);
-  const response = useActionData() as IProduct;
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (response && response._id) {
-      setIsEditing(false);
-      location.reload();
-    }
-  }, [response]);
 
   return (
-    <Form
-      className={classes.quantityCell}
-      method="post"
-      action="update"
-      onSubmit={() => {
-        setIsEditing(false);
-        navigate(0);
-      }}
-    >
+    <Form className={classes.quantityCell} method="post" action="update">
       {isEditing ? (
         <>
           <input

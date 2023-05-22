@@ -131,5 +131,5 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   });
 
-  return redirect('/admin/products');
+  return redirect('/admin');
 }

@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
 import RootLayout from './pages/RootLayout';
 import AdminLayout from './pages/AdminLayout';
 import Errorpage from './pages/ErrorPage';
@@ -38,6 +42,10 @@ function App() {
           path: 'admin',
           element: <AdminLayout />,
           children: [
+            {
+              index: true,
+              element: <Navigate to="products" replace />,
+            },
             {
               path: 'products',
               async lazy() {
