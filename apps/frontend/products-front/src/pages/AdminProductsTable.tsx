@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
-import { useTable, Column } from 'react-table';
+import React from 'react';
+import { useTable, Column, useSortBy } from 'react-table';
 import { ActionFunctionArgs, redirect, useLoaderData } from 'react-router-dom';
 import classes from './AdminProductsTable.module.css';
 import QuantityCell from '../components/QuantityCell';
 import { IProduct } from '../types/product';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function AdminProductsTable() {
+  // const products = useSelector((state: RootState) => state.products.products);
   const products = useLoaderData() as IProduct[];
   const data = React.useMemo(() => products, []);
 
@@ -29,7 +32,7 @@ export default function AdminProductsTable() {
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<IProduct>({ columns, data });
+    useTable<IProduct>({ columns, data }, useSortBy);
 
   return (
     <table {...getTableProps()} className={classes.table}>
@@ -37,7 +40,18 @@ export default function AdminProductsTable() {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+                {column.isSorted ? (
+                  column.isSortedDesc ? (
+                    <ExpandMoreIcon />
+                  ) : (
+                    <ExpandLessIcon />
+                  )
+                ) : (
+                  ''
+                )}
+              </th>
             ))}
           </tr>
         ))}
@@ -57,7 +71,7 @@ export default function AdminProductsTable() {
           prepareRow(row);
 
           return (
-            <tr {...row.getRowProps()}>
+            <tr {...row.getRowProps()} className="border-separate">
               {row.cells.map((cell) => {
                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
               })}
@@ -72,7 +86,6 @@ export default function AdminProductsTable() {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const { quantity, productId } = Object.fromEntries(formData);
-  console.log({ quantity, productId });
 
   await fetch(`${import.meta.env.VITE_GW_URL}/products/${productId}`, {
     method: 'put',

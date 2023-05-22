@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, Column, CellProps } from 'react-table';
+import { useTable, Column, CellProps, useSortBy } from 'react-table';
 import { IOrder } from '../types/order';
 import { Link, useLoaderData } from 'react-router-dom';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -7,6 +7,8 @@ import classes from './AdminOrdersTable.module.css';
 import Status from '../components/Status';
 import DateFormatter from '../components/DateFormater';
 import CopyButton from '../components/CopyButton';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function AdminOrdersTable() {
   const orders = useLoaderData() as IOrder[];
@@ -88,7 +90,7 @@ export default function AdminOrdersTable() {
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<IOrder>({ columns, data });
+    useTable<IOrder>({ columns, data }, useSortBy);
 
   return (
     <table {...getTableProps()} className={classes.table}>
@@ -96,7 +98,18 @@ export default function AdminOrdersTable() {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+                {column.isSorted ? (
+                  column.isSortedDesc ? (
+                    <ExpandMoreIcon />
+                  ) : (
+                    <ExpandLessIcon />
+                  )
+                ) : (
+                  ''
+                )}
+              </th>
             ))}
           </tr>
         ))}

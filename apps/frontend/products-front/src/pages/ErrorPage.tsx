@@ -4,6 +4,7 @@ import MainNavigation from '../components/MainNavigation';
 
 export default function Errorpage() {
   const error = useRouteError();
+  console.log(error);
 
   return (
     <div>
