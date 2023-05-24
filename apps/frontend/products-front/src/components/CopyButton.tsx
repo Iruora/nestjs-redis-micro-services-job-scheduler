@@ -1,22 +1,19 @@
 import React from 'react';
 import { CellProps } from 'react-table';
-import { IOrder } from '../types/order';
 import { Tooltip, IconButton, Snackbar, Alert } from '@mui/material';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import classes from './CopyButton.module.css';
 
-export default function CopyButton(props: CellProps<IOrder>) {
+export default function CopyButton<T extends object>(props: CellProps<T>) {
   const [open, setOpen] = React.useState(false);
-
+  async function handleCopyButtonClick() {
+    await navigator.clipboard.writeText(props.value);
+    setOpen(true);
+  }
   return (
     <div className={classes.pasteIcon}>
       <Tooltip title="Copy order ID">
-        <IconButton
-          onClick={() => {
-            navigator.clipboard.writeText(props.value);
-            setOpen(true);
-          }}
-        >
+        <IconButton onClick={handleCopyButtonClick}>
           <ContentPasteIcon className={classes.pasteIcon} />
         </IconButton>
       </Tooltip>
