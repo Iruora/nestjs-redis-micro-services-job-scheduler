@@ -6,7 +6,7 @@ import {
 import RootLayout from './pages/RootLayout';
 import AdminLayout from './pages/AdminLayout';
 import Errorpage from './pages/ErrorPage';
-import { action as productsAction } from './components/Product';
+import { action as newOrderAction } from './components/Product';
 
 function App() {
   const routes = [
@@ -14,7 +14,7 @@ function App() {
       path: '/',
       element: <RootLayout />,
       errorElement: <Errorpage />,
-      action: productsAction,
+      action: newOrderAction,
       children: [
         {
           index: true,
@@ -58,6 +58,36 @@ function App() {
                 return {
                   Component: AdminProductsTable,
                   loader: productsLoader,
+                };
+              },
+            },
+            {
+              path: 'products/:id',
+              async lazy() {
+                const {
+                  loader: productDetailsLoader,
+                  default: ProductDetailsPage,
+                } = await import('./pages/ProductDetailsPage');
+
+                return {
+                  Component: ProductDetailsPage,
+                  loader: productDetailsLoader,
+                };
+              },
+            },
+            {
+              path: 'products/:id/edit',
+              async lazy() {
+                const { default: ProductEditPage } = await import(
+                  './pages/ProductEditPage'
+                );
+                const { loader: productDetailsLoader } = await import(
+                  './pages/ProductDetailsPage'
+                );
+
+                return {
+                  Component: ProductEditPage,
+                  loader: productDetailsLoader,
                 };
               },
             },
