@@ -78,7 +78,7 @@ export default function AdminOrdersTable() {
         Cell: ({ value }: CellProps<IOrder>) => {
           return (
             <div>
-              <Link to={`/products/${value}`}>
+              <Link to={`/admin/products/${value}`}>
                 <LaunchIcon />
               </Link>
             </div>
