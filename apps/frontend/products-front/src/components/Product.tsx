@@ -61,7 +61,13 @@ export default function Product({
       >
         {name}
       </div>
-      <div className={classes['product--description']}>{description}</div>
+      <div className={classes['product--description']}>
+        {description.slice(
+          0,
+          description.length > 150 ? 150 : description.length - 1,
+        )}
+        ...
+      </div>
       <div
         className={
           quantity === 0
@@ -169,7 +175,7 @@ export async function action({ request }: ActionFunctionArgs) {
     productId: productId,
   };
 
-  fetch(`${import.meta.env.VITE_GW_URL}/orders`, {
+  await fetch(`${import.meta.env.VITE_GW_URL}/orders`, {
     body: JSON.stringify(data),
     method: 'POST',
     headers: {
