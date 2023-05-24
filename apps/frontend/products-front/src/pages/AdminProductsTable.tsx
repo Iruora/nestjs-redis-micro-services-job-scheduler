@@ -120,11 +120,12 @@ export default function AdminProductsTable() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const { quantity, productId } = Object.fromEntries(formData);
+  const data = Object.fromEntries(formData);
+  const { productId, ...payload } = data;
 
   await fetch(`${import.meta.env.VITE_GW_URL}/products/${productId}`, {
     method: 'put',
-    body: JSON.stringify({ quantity }),
+    body: JSON.stringify(payload),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
