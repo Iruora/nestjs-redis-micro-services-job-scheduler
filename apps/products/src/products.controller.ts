@@ -26,9 +26,9 @@ export class ProductsController {
   @Patch(':id')
   async updateProductQuantity(
     @Param('id') id: string,
-    @Body() product: Pick<Product, 'quantity'>,
+    @Body() product: Product,
   ): Promise<Product> {
-    return this.productsService.updateProductQuantity(id, product.quantity);
+    return this.productsService.updateProduct(id, product);
   }
 
   @MessagePattern('REDUCE_QTY')
@@ -39,6 +39,10 @@ export class ProductsController {
   }): Promise<void> {
     const { productId, quantity, orderId } = data;
     console.log(`Received message: ${data.productId} ${data.quantity}`);
-    this.productsService.reduceProductQuantity(productId, quantity, orderId);
+    await this.productsService.reduceProductQuantity(
+      productId,
+      quantity,
+      orderId,
+    );
   }
 }

@@ -37,7 +37,7 @@ export class GatewayController {
 
   @Put('products/:id')
   async updateProductQuantity(
-    @Body() product: Pick<Product, 'quantity'>,
+    @Body() product: Product,
     @Param('id') id: string,
   ): Promise<Product> {
     return lastValueFrom(
