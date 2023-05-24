@@ -1,0 +1,21 @@
+.product-container {
+  padding-top: 15px;
+  list-style: none;
+  color: darkslategray;
+  padding: 15px;
+  color: white;
+}
+
+.product-container h1 {
+  color: gold;
+  text-shadow: -1px 1px 0 #ccc, 1px 1px 0 #ccc, 1px -1px 0 #ccc,
+    -1px -1px 0 #ccc;
+}
+
+.product-container small {
+  padding-top: 60px;
+}
+
+.actions {
+  color: white;
+}
