@@ -7,8 +7,7 @@ import {
   usePagination,
 } from 'react-table';
 import { IOrder } from '../types/order';
-import { Link, useLoaderData } from 'react-router-dom';
-import LaunchIcon from '@mui/icons-material/Launch';
+import { useLoaderData } from 'react-router-dom';
 import classes from './AdminOrdersTable.module.css';
 import Status from '../components/Status';
 import DateFormatter from '../components/DateFormater';
@@ -16,6 +15,7 @@ import CopyButton from '../components/CopyButton';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Paginator from '../components/Paginator';
+import OpenProductDetails from '../components/OpenProductDetails';
 
 export default function AdminOrdersTable() {
   const orders = useLoaderData() as IOrder[];
@@ -75,15 +75,7 @@ export default function AdminOrdersTable() {
       {
         Header: 'productId',
         accessor: 'productId' as keyof IOrder,
-        Cell: ({ value }: CellProps<IOrder>) => {
-          return (
-            <div>
-              <Link to={`/admin/products/${value}`}>
-                <LaunchIcon />
-              </Link>
-            </div>
-          );
-        },
+        Cell: OpenProductDetails,
       },
       {
         Header: 'status',

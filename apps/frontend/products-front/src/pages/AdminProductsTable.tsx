@@ -1,5 +1,11 @@
 import React from 'react';
-import { useTable, Column, useSortBy, usePagination } from 'react-table';
+import {
+  useTable,
+  Column,
+  useSortBy,
+  usePagination,
+  CellProps,
+} from 'react-table';
 import {
   ActionFunctionArgs,
   redirect,
@@ -14,6 +20,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Paginator from '../components/Paginator';
 import { IconButton } from '@mui/material';
+import OpenProductDetails from '../components/OpenProductDetails';
 
 export default function AdminProductsTable() {
   const products = useLoaderData() as IProduct[];
@@ -23,12 +30,20 @@ export default function AdminProductsTable() {
   const columns: Column<IProduct>[] = React.useMemo(
     () => [
       {
+        Header: 'id',
+        accessor: '_id' as keyof IProduct,
+        Cell: OpenProductDetails,
+      },
+      {
         Header: 'Name',
         accessor: 'name' as keyof IProduct,
       },
       {
         Header: 'Description',
         accessor: 'description' as keyof IProduct,
+        Cell: ({ value }: CellProps<IProduct>) => (
+          <div>{value.length > 250 ? value.slice(0, 250) : value}...</div>
+        ),
       },
       {
         Header: 'quantity',

@@ -10,6 +10,7 @@ export default function CopyButton<T extends object>(props: CellProps<T>) {
     await navigator.clipboard.writeText(props.value);
     setOpen(true);
   }
+
   return (
     <div className={classes.pasteIcon}>
       <Tooltip title="Copy order ID">
