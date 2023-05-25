@@ -95,7 +95,22 @@ function App() {
               path: 'products/update',
               async lazy() {
                 const { action } = await import('./pages/AdminProductsTable');
+
                 return {
+                  action,
+                };
+              },
+            },
+            {
+              path: 'products/new',
+              async lazy() {
+                const { default: ProductNewPage } = await import(
+                  './pages/ProductNewPage'
+                );
+                const { action } = await import('./pages/AdminProductsTable');
+
+                return {
+                  Component: ProductNewPage,
                   action,
                 };
               },

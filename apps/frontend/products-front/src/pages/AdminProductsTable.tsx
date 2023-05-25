@@ -1,17 +1,24 @@
 import React from 'react';
 import { useTable, Column, useSortBy, usePagination } from 'react-table';
-import { ActionFunctionArgs, redirect, useLoaderData } from 'react-router-dom';
+import {
+  ActionFunctionArgs,
+  redirect,
+  useLoaderData,
+  useNavigate,
+} from 'react-router-dom';
 import classes from './AdminProductsTable.module.css';
 import QuantityCell from '../components/QuantityCell';
 import { IProduct } from '../types/product';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Paginator from '../components/Paginator';
+import { IconButton } from '@mui/material';
 
 export default function AdminProductsTable() {
-  // const products = useSelector((state: RootState) => state.products.products);
   const products = useLoaderData() as IProduct[];
   const data = React.useMemo(() => products, []);
+  const navigate = useNavigate();
 
   const columns: Column<IProduct>[] = React.useMemo(
     () => [
@@ -52,6 +59,13 @@ export default function AdminProductsTable() {
 
   return (
     <>
+      <IconButton
+        onClick={() => {
+          navigate('./new');
+        }}
+      >
+        <AddCircleIcon className="text-white" />
+      </IconButton>
       <table {...getTableProps()} className={classes.table}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -122,9 +136,13 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   const { productId, ...payload } = data;
+  const url =
+    request.method === 'PUT'
+      ? `${import.meta.env.VITE_GW_URL}/products/${productId}`
+      : `${import.meta.env.VITE_GW_URL}/products`;
 
-  await fetch(`${import.meta.env.VITE_GW_URL}/products/${productId}`, {
-    method: 'put',
+  await fetch(url, {
+    method: request.method,
     body: JSON.stringify(payload),
     headers: {
       Accept: 'application/json',
