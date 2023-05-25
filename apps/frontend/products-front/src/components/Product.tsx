@@ -72,7 +72,7 @@ export default function Product({
         className={
           quantity === 0
             ? classes['product--out-of-stock']
-            : classes['product--quantity']
+            : `${classes['product--quantity']} grow items-end`
         }
       >
         {quantity === 0 ? 'Out of Stock' : `available in ${quantity} items`}

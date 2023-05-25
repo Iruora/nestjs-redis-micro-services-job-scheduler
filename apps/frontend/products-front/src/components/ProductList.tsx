@@ -21,7 +21,10 @@ function ProductList({ products, cartMode = false }: ProductListProps) {
         }
       >
         {products.map((product) => (
-          <li key={product._id} className={classes['product-container']}>
+          <li
+            key={product._id}
+            className={`${classes['product-container']} flex flex-col`}
+          >
             <Product {...product} cartMode={cartMode} />
           </li>
         ))}

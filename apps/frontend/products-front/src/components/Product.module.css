@@ -5,6 +5,7 @@
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   padding: 5px;
+  min-height: 160px;
 }
 
 .product--title__out-of-stock {

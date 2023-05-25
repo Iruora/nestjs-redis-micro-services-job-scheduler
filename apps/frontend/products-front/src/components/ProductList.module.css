@@ -9,7 +9,7 @@
   gap: 15px;
   padding-inline-start: 0;
   display: grid;
-  grid-template-columns: repeat(3, 200px [col-start]);
+  grid-template-columns: repeat(auto-fill, 200px [col-start]);
 }
 
 .productList__cart {

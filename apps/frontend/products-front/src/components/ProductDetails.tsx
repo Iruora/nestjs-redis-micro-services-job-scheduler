@@ -13,6 +13,16 @@ export default function ProductDetails({
 }: ProductProps) {
   const navigate = useNavigate();
 
+  function deleteProductHandler() {
+    const deletionConfirmed = confirm(
+      `Are you sure you want to delete product ${name} ? you still have ${quantity} in store`,
+    );
+
+    if (deletionConfirmed) {
+      console.log('deleted');
+    }
+  }
+
   return (
     <div className={classes['product-container']}>
       <div className="flex flex-row">
@@ -34,7 +44,7 @@ export default function ProductDetails({
           >
             <EditIcon fontSize="small" />
           </IconButton>
-          <IconButton style={{ color: 'white' }}>
+          <IconButton style={{ color: 'white' }} onClick={deleteProductHandler}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </ButtonGroup>
