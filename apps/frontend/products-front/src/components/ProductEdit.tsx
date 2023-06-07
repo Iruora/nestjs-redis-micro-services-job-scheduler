@@ -10,7 +10,10 @@ export default function ProductEdit({
   return (
     <>
       <h1 className="text-center pb-8">You're editing {name}</h1>
-      <ProductForm method='PUT' {...{name, description, quantity, _id}} />
+      <ProductForm
+        method="PUT"
+        defaultValues={{ name, description, quantity, _id }}
+      />
     </>
   );
 }

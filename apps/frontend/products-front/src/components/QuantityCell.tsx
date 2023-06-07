@@ -11,7 +11,7 @@ export default function QuantityCell(props: CellProps<IProduct>) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <Form className={classes.quantityCell} method="post" action="update">
+    <Form className={classes.quantityCell} method="put" action="update">
       {isEditing ? (
         <>
           <input

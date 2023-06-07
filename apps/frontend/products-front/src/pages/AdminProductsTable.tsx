@@ -158,7 +158,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   await fetch(url, {
     method: request.method,
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ ...payload, quantity: +payload.quantity }),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

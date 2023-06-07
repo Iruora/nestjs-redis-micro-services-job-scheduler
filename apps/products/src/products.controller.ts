@@ -26,7 +26,7 @@ export class ProductsController {
   @Patch(':id')
   async updateProductQuantity(
     @Param('id') id: string,
-    @Body() product: Product,
+    @Body() product: Partial<Product>,
   ): Promise<Product> {
     return this.productsService.updateProduct(id, product);
   }

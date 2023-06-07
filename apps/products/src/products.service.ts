@@ -26,7 +26,7 @@ export class ProductsService {
 
   async updateProduct(
     id: string,
-    { quantity: newQuantity, name, description }: Product,
+    { quantity: newQuantity, name, description }: Partial<Product>,
   ): Promise<Product> {
     if (newQuantity < 0) {
       throw new BadRequestException('Quantity must be positive');
